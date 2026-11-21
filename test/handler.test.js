@@ -46,6 +46,20 @@ test('rejects requests without the right family key', async () => {
   }
 });
 
+test('a family key with a space works however it is typed', async () => {
+  const app = await serve({ config: { ...config, accessKey: 'soon Netflix' } });
+  try {
+    for (const typed of ['soon Netflix', 'soon netflix', 'Soon Netflix', ' SOON  netflix ']) {
+      assert.equal((await app.get('/api/code', typed)).status, 200, typed);
+    }
+    for (const typed of ['soonnetflix', 'soon Netflix!', 'soon']) {
+      assert.equal((await app.get('/api/code', typed)).status, 401, typed);
+    }
+  } finally {
+    await app.close();
+  }
+});
+
 test('blocks a device after too many wrong keys', async () => {
   const app = await serve({});
   try {

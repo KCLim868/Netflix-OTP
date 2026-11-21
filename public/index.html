@@ -145,16 +145,18 @@
         set(k, v) { try { localStorage.setItem(k, v); } catch {} },
       };
 
-      // The family share link looks like https://your-app/#key=SECRET
+      // The family share link looks like https://your-app/#key=soon%20Netflix
       const hashKey = (location.hash.match(/[#&]key=([^&]+)/) || [])[1];
-      if (hashKey) store.set(KEY_STORE, decodeURIComponent(hashKey));
+      if (hashKey) {
+        try { store.set(KEY_STORE, decodeURIComponent(hashKey.replace(/\+/g, ' '))); } catch {}
+      }
       let key = store.get(KEY_STORE) || '';
 
       let state = { startedAt: 0, since: null, offset: 0, result: null };
       try { Object.assign(state, JSON.parse(store.get(STATE_STORE) || '{}')); } catch {}
       const save = () => store.set(STATE_STORE, JSON.stringify(state));
 
-      let runId = 0, activeLoop = null, error = '', flash = '', flashTimer;
+      let runId = 0, activeLoop = null, error = '', flash = '', flashTimer, keyMessage = null;
 
       const serverNow = () => Date.now() + (state.offset || 0);
       const watching = () => Date.now() < state.startedAt + WATCH_MS;
@@ -190,6 +192,7 @@
           linkEl.textContent = result.label || 'Open Netflix link';
         }
 
+        if (keyMessage !== null) return setStatus(keyMessage || 'Enter the family key', !!keyMessage);
         if (flash) return setStatus(flash);
         if (error) return setStatus(error, true);
         if (result) {
@@ -262,7 +265,8 @@
 
       function askForKey(message) {
         document.body.classList.add('needs-key');
-        setStatus(message && key ? message : 'Enter the family key', !!(message && key));
+        keyMessage = message && key ? message : ''; // stays until a key is saved
+        render();
         $('keyinput').focus();
       }
 
@@ -273,6 +277,7 @@
         store.set(KEY_STORE, key);
         $('keyinput').value = '';
         document.body.classList.remove('needs-key');
+        keyMessage = null;
         error = '';
         render();
       });

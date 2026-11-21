@@ -46,9 +46,9 @@ IMAP is always on in Gmail, so there's nothing to change there.
 
 ### 2. Choose a family key
 
-Anyone with this key can see your codes, so don't use a simple PIN. A few random
-words work well, for example `purple-tiger-river-42`. Use letters, numbers and
-dashes only.
+Anyone with this key can see your codes, so don't use a simple PIN. A few words
+work well, for example `purple tiger river`. Spaces are fine, and capital letters
+don't matter, so `Purple Tiger River` works too.
 
 ### 3. Put it online (free, on Vercel)
 
@@ -73,10 +73,11 @@ npm start              # http://localhost:3000
 
 ### 4. Share it with the family
 
-Send everyone this link (your address, plus `#key=` and the family key):
+Send everyone this link (your address, plus `#key=` and the family key). Write
+each space in the key as `%20`, so messaging apps don't cut the link short:
 
 ```
-https://netflix-otp-xyz.vercel.app/#key=purple-tiger-river-42
+https://netflix-otp-xyz.vercel.app/#key=purple%20tiger%20river
 ```
 
 They open it once, and the key is remembered on that phone. To make it look like
