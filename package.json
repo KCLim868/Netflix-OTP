@@ -1,0 +1,27 @@
+{
+  "name": "netflix-otp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Family app that shows the Netflix sign-in code from Gmail (via IMAP) to whoever requested it.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test 'test/*.test.js'"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KCLim868/Netflix-OTP.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "imapflow": "2.11.0",
+    "mailparser": "3.14.2"
+  },
+  "devDependencies": {
+    "hoodiecrow-imap": "3.3.1"
+  }
+}
